@@ -20,7 +20,6 @@ contract AvatarFactory is Ownable {
     Avatar[] public avatars;
 
     mapping(uint256 => address) public avatarToOwner;
-    mapping(address => uint256) ownerToAvatar;
 
     function _createAvatarAndGetId() internal returns (uint256) {
         avatars.push(Avatar(0, 10, 10, 0));
@@ -46,7 +45,6 @@ contract ExposedAvatarFactory {
     Avatar[] public avatars;
 
     mapping(uint256 => address) public avatarToOwner;
-    mapping(address => uint256) ownerToAvatar;
 
     function createAvatarAndGetId() public returns (uint) {
         avatars.push(Avatar(0, 10, 10, 0));
