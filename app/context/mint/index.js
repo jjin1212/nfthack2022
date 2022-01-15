@@ -68,7 +68,7 @@ export const MintContextProvider = ({ children }) => {
     const withSigner = contract.connect(signer);
 
     // call the mint function of the smart contract
-    withSigner.mint(currentAddress).catch((e) => {
+    withSigner.mint().catch((e) => {
       // if user denies, or other errors
       setError(e.message);
       toggleLoading(false);
