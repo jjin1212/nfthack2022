@@ -10,8 +10,8 @@ describe("AvatarFactory contract", function () {
 
     it("Check _createAvatarAndGetId", async function () {
         const [owner, addr1] = await ethers.getSigners();
-        let num = await avatarFactory.connect(addr1).createAvatarAndGetId()
+        let num = await avatarFactory.connect(addr1).createAvatarAndGetId.call()
         console.log(num);
-        expect(await avatarFactory.createAvatarAndGetId()).to.equal(0);
+        expect(await avatarFactory.createAvatarAndGetId.call()).to.equal(0);
     });
 })

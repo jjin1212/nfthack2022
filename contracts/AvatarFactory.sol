@@ -30,10 +30,11 @@ contract AvatarFactory is Ownable {
     }
 }
 
-contract ExposedAvatarFactory is Ownable {
-    // using SafeMath for uint256;
-    // using SafeMath for uint64;
-    // using SafeMath for uint32;
+// For testing purposes, since we can't test internal functions
+contract ExposedAvatarFactory {
+    using SafeMath for uint256;
+    using SafeMath for uint64;
+    using SafeMath for uint32;
 
     struct Avatar {
         uint32 level;

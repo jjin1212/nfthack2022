@@ -31,3 +31,32 @@ contract AvatarModification is AvatarFactory {
         avatars[_avatarId].hp = avatars[_avatarId].hp + (uint64(_delta));
     }
 }
+
+// For testing purposes, since we can't test internal functions
+contract ExposedAvatarModification is ExposedAvatarFactory {
+    modifier onlyOwnerOf(uint256 _avatarId) {
+        require(msg.sender == avatarToOwner[_avatarId]);
+        _;
+    }
+
+    function modifyHp(uint256 _avatarId, uint256 _delta)
+        external
+        onlyOwnerOf(_avatarId)
+    {
+        avatars[_avatarId].hp = avatars[_avatarId].hp + (uint64(_delta));
+    }
+
+    function modifyAttack(uint256 _avatarId, uint256 _delta)
+        external
+        onlyOwnerOf(_avatarId)
+    {
+        avatars[_avatarId].hp = avatars[_avatarId].hp + (uint64(_delta));
+    }
+
+    function modifyXp(uint256 _avatarId, uint256 _delta)
+        external
+        onlyOwnerOf(_avatarId)
+    {
+        avatars[_avatarId].hp = avatars[_avatarId].hp + (uint64(_delta));
+    }
+}
