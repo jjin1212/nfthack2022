@@ -13,7 +13,6 @@ function getRandomMultiplierWithRange(min, max) { // min and max included
     return randNum / 100
 }
 
-// Returns True if battle is won by the avatar, False if the avatar lost
 function battle(avatarHp, cpuHp, avatarAttack, cpuAttack, isAvatarTurn) {
     if (isAvatarTurn) {
         cpuHp -= avatarAttack * getRandomMultiplierWithRange(70,100);
@@ -53,10 +52,14 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
+// When avatar attacks and gets 200 from /battle endpoint, it should call this /fetchData
+// to update the UI then call battle immediately after with isAvatarTurn = False.
+// Repeat till whoWon field is populated with winner
 app.get("/fetchData", (req, res) => {
     // return data to FE
 })
 
+// This will get called when we click "attack" in game AND when CPU is ready to attack
 app.post("/battle", (req, res) => {
     var battleId = req.battleId;
     var avatarAttack = req.avatarAttack;
