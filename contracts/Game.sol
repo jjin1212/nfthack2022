@@ -6,13 +6,13 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import './Equipment.sol';
-import './Avatar.sol';
 import './RandomNumberConsumer.sol';
+import './AvatarOwnership.sol';
 
 contract Game is Ownable {
     IERC20 token;
     EquipmentContract equip;
-    AvatarTokens avatar;
+    AvatarOwnership avatar;
     RandomNumberConsumer randGenerator;
 
 
@@ -21,7 +21,7 @@ contract Game is Ownable {
     constructor(
         IERC20 _tokenAddress,
         EquipmentContract _equip,
-        AvatarTokens _avatar,
+        AvatarOwnership _avatar,
         RandomNumberConsumer _randGenerator
     ) {
         token = _tokenAddress;
@@ -63,7 +63,6 @@ contract Game is Ownable {
 
     function battleRewards() external {
         // Give user their tokens * 2 + one new equipment
-        
         uint randNum
 
         
