@@ -1,6 +1,8 @@
+const hre = require("hardhat");
+
 const main = async () => {
-    const nftContractFactory = await hre.ethers.getContractFactory('Avatar');
-    const nftContract = await nftContractFactory.deploy();
+    const nftContractFactory = await hre.ethers.getContractFactory('AvatarOwnership');
+    const nftContract = await nftContractFactory.deploy(1000);
     await nftContract.deployed();
     console.log("Contract deployed to:", nftContract.address);
   
