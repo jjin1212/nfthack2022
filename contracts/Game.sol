@@ -8,18 +8,18 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import './Equipment.sol';
 import './RandomNumberConsumer.sol';
 import './AvatarOwnership.sol';
+import './Token.sol';
 
 contract Game is Ownable {
-    IERC20 token;
+    TokenContract token;
     EquipmentContract equip;
     AvatarOwnership avatar;
     RandomNumberConsumer randGenerator;
 
-
     mapping (address => uint) public stakedTokens;
 
     constructor(
-        IERC20 _tokenAddress,
+        TokenContract _tokenAddress,
         EquipmentContract _equip,
         AvatarOwnership _avatar,
         RandomNumberConsumer _randGenerator
@@ -40,32 +40,38 @@ contract Game is Ownable {
     function unstake(uint _amount) external payable {
         require(stakedTokens[msg.sender] >= _amount, "insufficient staked balance");
         require(_amount >= 0, "unstaking negative value");
-        token.transferFrom(address(this), msg.sender, _amount);
+        token.transfer(msg.sender, _amount);
         stakedTokens[msg.sender] -= _amount;
     }
 
-    // // function to calculate the battle result. Return true for a win, false for a lose
-    // // this should take into account the strength of the user's character and gears
-    // function _calculateBattleResult(uint battleId, uint charId, uint gear1Id, uint gear2Id, uint gear3Id) {
-    //     // formula to calculate the battle result;
-    //     // can use Chainlink VRF for randomness;
-    // }
+    // Give user their tokens * 2 + one new equipment
+    function battleResults(uint _battleId) external {
+        // TODO check if battleId belongs to the sender either here or Backend
 
-    // // calculate the reward of a battle
-    // function _calculateBattleReward(uint battleId) {
-                
-    // }
-
-    // // calculate the staked token loss of a battle
-    // function _calculateBattleLoss(uint battleId, address user) {
-    //     // take a portion of staked[user];
-    // }
-
-    function battleRewards() external {
-        // Give user their tokens * 2 + one new equipment
-        uint randNum
-
+        // TODO fix rand with VRF and figure out how to mock in test
+        //uint rand = _getRandFromGenerator(_battleId);
+        uint rand = 3;
         
+        // TODO: fetch battle result from Backend
+        bool userWon = true;
+        uint stakedAmount = stakedTokens[msg.sender];
         
+        if (userWon) {
+            // Mint more token for sender and unstake previously staked
+            token.mintWithAddress(msg.sender, stakedAmount);
+            token.transfer(msg.sender, stakedAmount);
+            stakedTokens[msg.sender] -= stakedAmount;
+
+            // Mint equipment
+            //equip.mint(rand % 3, 1);
+        } else {
+            // lose half of the staked token
+            stakedTokens[msg.sender] -= stakedAmount / 2;
+        }        
+    }
+
+    function _getRandFromGenerator(uint _id) private returns (uint rand) {
+        randGenerator.getRandomNumber(_id);
+        return randGenerator.getRandomResultForId(_id);
     }
 }

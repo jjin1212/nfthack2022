@@ -7,8 +7,9 @@ contract RandomNumberConsumer is VRFConsumerBase {
     
     bytes32 internal keyHash;
     uint256 internal fee;
-    
-    uint256 public randomResult;
+    uint32 private constant GENERATION_IN_PROGRESS = 108;
+    mapping (uint => uint) idToRandomResult;
+    mapping (bytes32 => uint) requestIdToId;
     
     /**
      * Constructor inherits VRFConsumerBase
@@ -31,8 +32,10 @@ contract RandomNumberConsumer is VRFConsumerBase {
     /** 
      * Requests randomness 
      */
-    function getRandomNumber() public returns (bytes32 requestId) {
+    function getRandomNumber(uint _id) public returns (bytes32 requestId) {
         require(LINK.balanceOf(address(this)) >= fee, "Not enough LINK - fill contract with faucet");
+        idToRandomResult[_id] = GENERATION_IN_PROGRESS;
+        requestIdToId[requestId] = _id;
         return requestRandomness(keyHash, fee);
     }
 
@@ -40,7 +43,14 @@ contract RandomNumberConsumer is VRFConsumerBase {
      * Callback function used by VRF Coordinator
      */
     function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override {
-        randomResult = randomness;
+        uint id = requestIdToId[requestId];
+        idToRandomResult[id] = (randomness % 100) + 1;
+    }
+
+    function getRandomResultForId(uint _id) public view returns (uint randomResult) {
+        require(idToRandomResult[_id] != GENERATION_IN_PROGRESS, "Still generating please try again later");
+        require(idToRandomResult[_id] != 0, "Not generated");
+        return idToRandomResult[_id];
     }
 
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
