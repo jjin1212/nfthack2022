@@ -34,4 +34,4 @@ NEXT_PUBLIC_ALCHEMY=YOUR_ALCHEMY_NODE_WEBSOCKET_URL
 NEXT_PUBLIC_CONTRACT_ADDRESS=YOUR_AVATAR_OWNERSHIP_CONTRACT_ADDRESS
 ```
 
-Then, follow the Getting Started section.
+Then, follow the Getting Started section, and go to `http://localhost:3000/mint`
