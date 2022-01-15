@@ -1,21 +1,34 @@
-// contracts/GameItems.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract GameItems is ERC1155 {
-    uint256 public constant GOLD = 0;
-    uint256 public constant SILVER = 1;
-    uint256 public constant THORS_HAMMER = 2;
-    uint256 public constant SWORD = 3;
-    uint256 public constant SHIELD = 4;
+contract AvatarTokens is ERC1155 {
+    using SafeMath for uint256;
 
-    constructor() ERC1155("https://game.example/api/item/{id}.json") {
-        _mint(msg.sender, GOLD, 10**18, "");
-        _mint(msg.sender, SILVER, 10**27, "");
-        _mint(msg.sender, THORS_HAMMER, 1, "");
-        _mint(msg.sender, SWORD, 10**9, "");
-        _mint(msg.sender, SHIELD, 10**9, "");
+    address public governance;
+    uint256 public avatarCount;
+    uint256 public hp;
+    uint256 public attack;
+    uint256 public xp;
+
+    modifier onlyGovernance() {
+        require(msg.sender == governance, "Only governance can call this");
+        _;
+    }
+
+    constructor(address governance_) ERC1155("") {
+        governance = governance_;
+        hp = 10;
+        attack = 10;
+        xp = 0;
+    }
+
+    function addNewAvatar(uint256 initialSupply) external onlyGovernance {
+        avatarCount++;
+        uint256 avatarTokenClassId = avatarCount;
+
+        _mint(msg.sender, avatarTokenClassId, initialSupply, "");        
     }
 }
