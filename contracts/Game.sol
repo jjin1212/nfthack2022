@@ -50,7 +50,7 @@ contract Game is Ownable {
 
         // TODO fix rand with VRF and figure out how to mock in test
         //uint rand = _getRandFromGenerator(_battleId);
-        uint rand = 3;
+        uint rand = 0;
         
         // TODO: fetch battle result from Backend
         bool userWon = true;
@@ -63,7 +63,7 @@ contract Game is Ownable {
             stakedTokens[msg.sender] -= stakedAmount;
 
             // Mint equipment
-            //equip.mint(rand % 3, 1);
+            equip.mintWithAddress(msg.sender, rand % 3, 1);
         } else {
             // lose half of the staked token
             stakedTokens[msg.sender] -= stakedAmount / 2;

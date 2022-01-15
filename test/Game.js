@@ -61,9 +61,8 @@ describe.only("Game contract", function () {
         await token.mint(5);
         await token.approve(game.address, "4");
         await game.stake(4)
-        expect(await token.balanceOf(owner.address)).to.equal(1);
-
         await game.battleResults(0)
         expect(await token.balanceOf(owner.address)).to.equal(9);
+        expect(await equipment.balanceOf(owner.address, 0)).to.equal(1);
     })
 });
