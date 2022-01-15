@@ -16,4 +16,8 @@ describe("AvatarOwnership contract", function () {
         await avatarOwnership.connect(addr1).mint();
         expect(await avatarOwnership.balanceOf(addr1.address)).to.equal(1);
     });
+    it("getAvatarStats", async function() {
+        await avatarOwnership.mint();
+        // expect(await avatarOwnership.getAvatarStats(0)).to.equal(0,10,10,0);
+    });
 })
