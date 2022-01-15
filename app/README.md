@@ -23,7 +23,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Minting the smart contract
 
-If you want to modify the conrtact, you should deploy them by running the hardhat scripts.
+If you want to modify the conrtact, you should deploy them by running the hardhat scripts. If not, you can use the pre-deployed contracts below.
 
 ### Ropsten Contract Addresses
 - AvatarOwnership: `0x615c9303444c7Ba99c2ff6818E7DBCa755814945`
