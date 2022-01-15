@@ -6,16 +6,16 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import './Equipment.sol';
-import './Avatar.sol';
+import './AvatarOwnership.sol';
 
 contract Game is Ownable {
     IERC20 token;
     EquipmentContract equip;
-    AvatarTokens avatar;
+    AvatarOwnership avatar;
 
     mapping (address => uint) public stakedTokens;
 
-    constructor(IERC20 _tokenAddress, EquipmentContract _equip, AvatarTokens _avatar) {
+    constructor(IERC20 _tokenAddress, EquipmentContract _equip, AvatarOwnership _avatar) {
         token = _tokenAddress;
         equip = _equip;
         avatar = _avatar;
