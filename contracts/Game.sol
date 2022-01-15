@@ -5,13 +5,20 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import './Equipment.sol';
+import './Avatar.sol';
 
 contract Game is Ownable {
     IERC20 token;
+    EquipmentContract equip;
+    AvatarTokens avatar;
+
     mapping (address => uint) public stakedTokens;
 
-    constructor(IERC20 _tokenAddress) {
+    constructor(IERC20 _tokenAddress, EquipmentContract _equip, AvatarTokens _avatar) {
         token = _tokenAddress;
+        equip = _equip;
+        avatar = _avatar;
     }
 
     function stake(uint _amount) external payable {
@@ -43,5 +50,9 @@ contract Game is Ownable {
     // // calculate the staked token loss of a battle
     // function _calculateBattleLoss(uint battleId, address user) {
     //     // take a portion of staked[user];
+    // }
+
+    // function battleRewards() {
+        
     // }
 }
