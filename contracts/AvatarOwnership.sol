@@ -7,19 +7,16 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract AvatarOwnership is ERC721, AvatarModification {
-    uint256 maxSupply;
+    using SafeMath for uint256;
+
+    uint256 public maxSupply;
 
     constructor(uint256 _maxSupply) ERC721("avatarNFT", "AVATAR") {
-        maxSupply = _maxSupply - 1;
-    }
-
-    function _baseURI() internal pure override returns (string memory) {
-        return "https://foo.com/assets/";
+        maxSupply = _maxSupply;
     }
 
     function mint() public payable {
         require(avatars.length <= maxSupply, "Sold out");
-        require(msg.value == 0.0 ether, "Incorrect amount");
 
         uint256 avatarTokenId = _createAvatarAndGetId();
         _safeMint(msg.sender, avatarTokenId);
