@@ -16,8 +16,8 @@ async function main() {
     randGenerator = await randGeneratorFactory.deploy();
     await randGenerator.deployed()
     game = await gameFactory.deploy(
-        token.address, 
-        equipment.address, 
+        token.address,
+        equipment.address,
         avatar.address,
         randGenerator.address
     );

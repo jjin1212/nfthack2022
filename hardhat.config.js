@@ -28,10 +28,12 @@ module.exports = {
       url: process.env.ALCHEMY_RINKEBY_URL,
       accounts: [process.env.PRIVATE_KEY],
     },
+    ropsten: {
+      url: process.env.ALCHEMY_ROPSTEN_URL,
+      accounts: [process.env.PRIVATE_KEY],
+    }
   },
   etherscan: {
-    apiKey: {
-      rinkeby: process.env.ETHERSCAN_KEY,
-    }
+    apiKey: process.env.ETHERSCAN_KEY
   }
 };
