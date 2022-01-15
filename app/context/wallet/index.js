@@ -25,12 +25,20 @@ export const WalletContextProvider = ({ children }) => {
   React.useEffect(() => {
     const { ethereum } = window;
 
+    const maybeGetMetamaskAccounts = async () => {
+      // set current account
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+      setCurrentWallet("metamask");
+      setCurrentAddress(accounts[0]);
+    };
+
     const handleChainChanged = (_chainId) => {
       // We recommend reloading the page, unless you must do otherwise
       window.location.reload();
     };
 
     if (_isMetaMaskInstalled() && ethereum.isConnected()) {
+      maybeGetMetamaskAccounts();
       const handleAccountChanged = (accounts) => {
         setCurrentAddress(accounts[0]);
       };
