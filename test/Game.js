@@ -8,18 +8,26 @@ describe("Game contract", function () {
     let token;
     let equipment;
     let avatar;
+    let randGenerator;
 
     beforeEach(async function () {
         const gameFactory = await ethers.getContractFactory("Game");
         const tokenFactory = await ethers.getContractFactory("TokenContract")
         const equipmentFactory = await ethers.getContractFactory("EquipmentContract")
         const avatarFactory = await ethers.getContractFactory("AvatarTokens")
+        const randGeneratorFactory = await ethers.getContractFactory("RandomNumberConsumer")
         attackBoosts = [2, 6, 10];
         hpBoosts = [20, 30, 40];
         token = await tokenFactory.deploy();
         equipment = await equipmentFactory.deploy(attackBoosts, hpBoosts);
         avatar = await avatarFactory.deploy();
-        game = await gameFactory.deploy(token.address, equipment.address, avatar.address);
+        randGenerator = await randGeneratorFactory.deploy();
+        game = await gameFactory.deploy(
+            token.address, 
+            equipment.address, 
+            avatar.address,
+            randGenerator.address
+        );
     });
 
     it("stake function", async function() {

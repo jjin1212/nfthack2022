@@ -7,18 +7,27 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import './Equipment.sol';
 import './Avatar.sol';
+import './RandomNumberConsumer.sol';
 
 contract Game is Ownable {
     IERC20 token;
     EquipmentContract equip;
     AvatarTokens avatar;
+    RandomNumberConsumer randGenerator;
+
 
     mapping (address => uint) public stakedTokens;
 
-    constructor(IERC20 _tokenAddress, EquipmentContract _equip, AvatarTokens _avatar) {
+    constructor(
+        IERC20 _tokenAddress,
+        EquipmentContract _equip,
+        AvatarTokens _avatar,
+        RandomNumberConsumer _randGenerator
+    ) {
         token = _tokenAddress;
         equip = _equip;
         avatar = _avatar;
+        randGenerator = _randGenerator;
     }
 
     function stake(uint _amount) external payable {
@@ -52,7 +61,12 @@ contract Game is Ownable {
     //     // take a portion of staked[user];
     // }
 
-    // function battleRewards() {
+    function battleRewards() external {
+        // Give user their tokens * 2 + one new equipment
         
-    // }
+        uint randNum
+
+        
+        
+    }
 }
