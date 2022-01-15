@@ -1,34 +1,27 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
+import "./AvatarFactory.sol";
+import "./AvatarModification.sol";
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract AvatarTokens is ERC1155 {
-    using SafeMath for uint256;
+contract AvatarOwnership is ERC721, AvatarModification {
+    uint256 maxSupply;
 
-    address public governance;
-    uint256 public avatarCount;
-    uint256 public hp;
-    uint256 public attack;
-    uint256 public xp;
-
-    modifier onlyGovernance() {
-        require(msg.sender == governance, "Only governance can call this");
-        _;
+    constructor(uint256 _maxSupply) ERC721("avatarNFT", "AVATAR") {
+        maxSupply = _maxSupply - 1;
     }
 
-    constructor(address governance_) ERC1155("") {
-        governance = governance_;
-        hp = 10;
-        attack = 10;
-        xp = 0;
+    function _baseURI() internal pure override returns (string memory) {
+        return "https://foo.com/assets/";
     }
 
-    function addNewAvatar(uint256 initialSupply) external onlyGovernance {
-        avatarCount++;
-        uint256 avatarTokenClassId = avatarCount;
+    function mint() public payable {
+        require(avatars.length <= maxSupply, "Sold out");
+        require(msg.value == 0.0 ether, "Incorrect amount");
 
-        _mint(msg.sender, avatarTokenClassId, initialSupply, "");        
+        uint256 avatarTokenId = _createAvatarAndGetId();
+        _safeMint(msg.sender, avatarTokenId);
     }
 }

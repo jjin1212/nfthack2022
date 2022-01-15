@@ -17,7 +17,11 @@ contract EquipmentTokens is ERC1155 {
         _;
     }
 
-    constructor(address governance_, uint attackBoost_, uint hpBoost_) ERC1155("") {
+    constructor(
+        address governance_,
+        uint256 attackBoost_,
+        uint256 hpBoost_
+    ) ERC1155("") {
         governance = governance_;
         attackBoost = attackBoost_;
         hpBoost = hpBoost_;
@@ -27,6 +31,6 @@ contract EquipmentTokens is ERC1155 {
         equipmentCount++;
         uint256 equipmentTokenClassId = equipmentCount;
 
-        _mint(msg.sender, equipmentTokenClassId, initialSupply, "");        
+        _mint(msg.sender, equipmentTokenClassId, initialSupply, "");
     }
 }
