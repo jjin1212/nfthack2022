@@ -5,8 +5,9 @@ import "./AvatarModification.sol";
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
-contract AvatarOwnership is ERC721, AvatarModification {
+contract AvatarOwnership is ERC721, ERC721Enumerable, AvatarModification {
     using SafeMath for uint256;
 
     uint256 public maxSupply;
