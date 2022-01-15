@@ -28,7 +28,16 @@ contract AvatarOwnership is ERC721Enumerable, AvatarModification {
         _safeMint(msg.sender, avatarTokenId);
     }
 
-    function getAvatarStats(uint256 avatarId) external view returns(uint32, uint64, uint64, uint64) {
+    function getAvatarStats(uint256 avatarId)
+        external
+        view
+        returns (
+            uint32,
+            uint64,
+            uint64,
+            uint64
+        )
+    {
         require(avatars.length > avatarId);
         Avatar storage avatar = avatars[avatarId];
         return (avatar.level, avatar.attackPoints, avatar.hp, avatar.xp);

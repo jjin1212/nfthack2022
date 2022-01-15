@@ -24,4 +24,17 @@ describe("Equipment contract", function () {
         await equipment.connect(addr1).mint(0, 1);
         expect(await equipment.balanceOf(addr1.address, 0)).to.equal(1);
     });
+    it("getEquipmentStats function", async function() {
+        stats = await(equipment.getEquipmentStats(0))
+        arr = stats[0].toNumber(), stats[1].toNumber();
+        expect(arr).to.equal(2,20);
+
+        stats = await(equipment.getEquipmentStats(1))
+        arr = stats[0].toNumber(), stats[1].toNumber();
+        expect(arr).to.equal(6,30);
+
+        stats = await(equipment.getEquipmentStats(2))
+        arr = stats[0].toNumber(), stats[1].toNumber();
+        expect(arr).to.equal(10,40);
+    })
 });
