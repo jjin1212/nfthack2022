@@ -31,9 +31,9 @@ contract AvatarFactory is Ownable {
 }
 
 contract ExposedAvatarFactory is Ownable {
-    using SafeMath for uint256;
-    using SafeMath for uint64;
-    using SafeMath for uint32;
+    // using SafeMath for uint256;
+    // using SafeMath for uint64;
+    // using SafeMath for uint32;
 
     struct Avatar {
         uint32 level;
@@ -47,7 +47,7 @@ contract ExposedAvatarFactory is Ownable {
     mapping(uint256 => address) public avatarToOwner;
     mapping(address => uint256) ownerToAvatar;
 
-    function _createAvatarAndGetId() public returns (uint256) {
+    function createAvatarAndGetId() public returns (uint) {
         avatars.push(Avatar(0, 10, 10, 0));
         uint256 id = avatars.length - 1;
         avatarToOwner[id] = msg.sender;

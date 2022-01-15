@@ -9,6 +9,9 @@ describe("AvatarFactory contract", function () {
     })
 
     it("Check _createAvatarAndGetId", async function () {
-        expect(await avatarFactory._createAvatarAndGetId()).to.equal(0);
+        const [owner, addr1] = await ethers.getSigners();
+        let num = await avatarFactory.connect(addr1).createAvatarAndGetId()
+        console.log(num);
+        expect(await avatarFactory.createAvatarAndGetId()).to.equal(0);
     });
 })
