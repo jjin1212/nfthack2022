@@ -7,30 +7,40 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 contract EquipmentContract is ERC1155 {
     using SafeMath for uint256;
 
-    uint public constant EQUIP1 = 0;
-    uint public constant EQUIP2 = 1;
-    uint public constant EQUIP3 = 2;
-    mapping (uint => uint) public equipAttack;
-    mapping (uint => uint) public equipHp;
+    uint256 public constant EQUIP1 = 0;
+    uint256 public constant EQUIP2 = 1;
+    uint256 public constant EQUIP3 = 2;
+    mapping(uint256 => uint256) public equipAttack;
+    mapping(uint256 => uint256) public equipHp;
 
-    constructor(uint [] memory _attackBoosts, uint [] memory _hpBoosts) ERC1155("") {
-        for (uint i = 0; i < _attackBoosts.length; i++) {
+    constructor(uint256[] memory _attackBoosts, uint256[] memory _hpBoosts)
+        ERC1155("")
+    {
+        for (uint256 i = 0; i < _attackBoosts.length; i++) {
             equipAttack[i] = _attackBoosts[i];
             equipHp[i] = _hpBoosts[i];
         }
     }
 
-    function mint(uint _id, uint _amount) public payable {
-        require ((_id < 3) && (_id >= 0), "token doesn't exist");
+    function mint(uint256 _id, uint256 _amount) public payable {
+        require((_id < 3) && (_id >= 0), "token doesn't exist");
         _mint(msg.sender, _id, _amount, "");
     }
 
-    function mintWithAddress(address _address, uint _id, uint _amount) public payable {
-        require ((_id < 3) && (_id >= 0), "token doesn't exist");
+    function mintWithAddress(
+        address _address,
+        uint256 _id,
+        uint256 _amount
+    ) public payable {
+        require((_id < 3) && (_id >= 0), "token doesn't exist");
         _mint(_address, _id, _amount, "");
     }
 
-    function getEquipmentStats(uint256 equipId) external view returns(uint256, uint256) {
+    function getEquipmentStats(uint256 equipId)
+        external
+        view
+        returns (uint256, uint256)
+    {
         return (equipAttack[equipId], equipHp[equipId]);
     }
 }
