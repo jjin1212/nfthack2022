@@ -4,7 +4,7 @@ const { waffle } = require("hardhat")
 const { deployMockContract } = waffle
 
 
-describe.only("Game contract", function () {
+describe("Game contract", function () {
 
     let game;
     let token;
