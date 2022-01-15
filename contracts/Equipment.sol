@@ -24,4 +24,9 @@ contract EquipmentContract is ERC1155 {
         require ((_id < 3) && (_id >= 0), "token doesn't exist");
         _mint(msg.sender, _id, _amount, "");
     }
+
+    function mintWithAddress(address _address, uint _id, uint _amount) public payable {
+        require ((_id < 3) && (_id >= 0), "token doesn't exist");
+        _mint(_address, _id, _amount, "");
+    }
 }
