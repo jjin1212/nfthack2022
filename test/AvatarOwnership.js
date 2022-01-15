@@ -1,5 +1,4 @@
 const { expect } = require("chai");
-// const { ethers } = require("hardhat");
 
 describe("AvatarOwnership contract", function () {
     let avatarOwnership;
@@ -10,11 +9,12 @@ describe("AvatarOwnership contract", function () {
     })
 
     it("Check Constructor", async function () {
-        expect(await avatarOwnership.maxSupply).to.equal(5);
+        expect(await avatarOwnership.maxSupply()).to.equal(5);
     });
     it("mint function", async function() {
         const [owner, addr1] = await ethers.getSigners();
         await avatarOwnership.connect(addr1).mint();
         expect(await avatarOwnership.balanceOf(addr1.address)).to.equal(1);
+        // expect(await avatarOwnership.avatars.length).to.equal(1);
     });
 })
