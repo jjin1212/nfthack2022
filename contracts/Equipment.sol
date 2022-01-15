@@ -29,4 +29,8 @@ contract EquipmentContract is ERC1155 {
         require ((_id < 3) && (_id >= 0), "token doesn't exist");
         _mint(_address, _id, _amount, "");
     }
+
+    function getEquipmentStats(uint256 equipId) external view returns(uint256, uint256) {
+        return (equipAttack[equipId], equipHp[equipId]);
+    }
 }
