@@ -13,3 +13,8 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 ```
+
+## Deploying on Rinkeby testnet
+```
+node ./scripts/run.js
+```
