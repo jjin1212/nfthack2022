@@ -9,25 +9,30 @@ import "./Equipment.sol";
 import "./RandomNumberConsumer.sol";
 import "./AvatarOwnership.sol";
 import "./Token.sol";
+import "./ChainlinkClient.sol";
 
 contract Game is Ownable {
     TokenContract token;
     EquipmentContract equip;
     AvatarOwnership avatar;
     RandomNumberConsumer randGenerator;
+    ChainlinkClient chainlink;
 
     mapping(address => uint256) public stakedTokens;
+    mapping(uint => bool) public battleResults;
 
     constructor(
         TokenContract _tokenAddress,
         EquipmentContract _equip,
         AvatarOwnership _avatar,
-        RandomNumberConsumer _randGenerator
+        RandomNumberConsumer _randGenerator,
+        ChainlinkClient _chainlink
     ) {
         token = _tokenAddress;
         equip = _equip;
         avatar = _avatar;
         randGenerator = _randGenerator;
+        chainlink = _chainlink
     }
 
     function stake(uint256 _amount) external payable {
@@ -47,16 +52,21 @@ contract Game is Ownable {
         stakedTokens[msg.sender] -= _amount;
     }
 
+    function fetchBattleResults(uint _battleId) external {
+        chainlink.requestData('http://b8c5-99-241-141-46.ngrok.io/get_result?battleId=9')
+    }
+
     // Give user their tokens * 2 + one new equipment
     function battleResults(uint256 _battleId) external {
         // TODO check if battleId belongs to the sender either here or Backend
+        require((chainlink.idToResult[_battleId] != 0) && , "Still pending fetching the result");
 
         // TODO fix rand with VRF and figure out how to mock in test
         //uint rand = _getRandFromGenerator(_battleId);
         uint256 rand = 0;
 
         // TODO: fetch battle result from Backend
-        bool userWon = true;
+        bool userWon = chainlink.idToResult[_battleId] == 1 ? true : false;
         uint256 stakedAmount = stakedTokens[msg.sender];
 
         if (userWon) {
