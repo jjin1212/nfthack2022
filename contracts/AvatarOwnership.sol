@@ -16,16 +16,17 @@ contract AvatarOwnership is ERC721Enumerable, AvatarModification {
         maxSupply = _maxSupply;
     }
 
+    // Will probably need this for updating
     modifier isOwnerOf(uint256 avatarId) {
         require(msg.sender == avatarToOwner[avatarId]);
         _;
     }
 
     function mint() public payable {
-        require(avatars.length <= maxSupply, "Sold out");
+        require(avatars.length < maxSupply, "Sold out");
 
-        uint256 avatarTokenId = _createAvatarAndGetId();
-        _safeMint(msg.sender, avatarTokenId);
+        uint256 tokenId = _createAvatarAndGetId();
+        _safeMint(msg.sender, tokenId);
     }
 
     function getAvatarStats(uint256 avatarId)

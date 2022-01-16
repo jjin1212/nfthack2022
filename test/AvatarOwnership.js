@@ -10,6 +10,8 @@ describe("AvatarOwnership contract", function () {
 
     it("Check Constructor", async function () {
         expect(await avatarOwnership.maxSupply()).to.equal(5);
+        console.log(await avatarOwnership.avatars.length)
+        // expect(await avatarOwnership.avatars().length).to.equal(5)
     });
     it("mint function", async function() {
         const [owner, addr1] = await ethers.getSigners();
@@ -18,6 +20,8 @@ describe("AvatarOwnership contract", function () {
     });
     it("getAvatarStats", async function() {
         await avatarOwnership.mint();
+        console.log(avatarOwnership.avatars[0]);
+        console.log(avatarOwnership.avatars.length);
         // expect(await avatarOwnership.getAvatarStats(0)).to.equal(0,10,10,0);
     });
 })
