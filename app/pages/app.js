@@ -54,7 +54,7 @@ const App = () => {
           <Image src="/character.png" position={"absolute"} width="100%" height="auto"/>
           <Image src="/monster.png" position={"absolute"} width="100%" height="auto"/>
           <Image src="/info-cards.png" position={"absolute"} width="100%" height="auto"/>
-          <video type="video/mp4" src="/animation-test.mp4" ref={videoRef} style={{ zIndex: 99, position: "absolute", display: state === "idle" ? "none" : "inherit" }}/>
+          <video type="video/mp4" src="/attack_milkbox.mp4" ref={videoRef} style={{ zIndex: 99, position: "absolute", display: state === "idle" ? "none" : "inherit" }}/>
           {/* <Image src="/attack-window.png" position={"absolute"} width="100%" height="auto"/> */}
         </Box>
         <Box p={3} width="100%" backgroundColor={"gray.500"} border="3px solid" borderRadius={"2xl"}>
