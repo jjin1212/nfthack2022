@@ -32,6 +32,9 @@ To mint the contract locally, create a `.env.local` file in the `/app` directory
 ```
 NEXT_PUBLIC_ALCHEMY=YOUR_ALCHEMY_NODE_WEBSOCKET_URL
 NEXT_PUBLIC_CONTRACT_ADDRESS=YOUR_AVATAR_OWNERSHIP_CONTRACT_ADDRESS
+NEXT_PUBLIC_EQUIPMENT_CONTRACT_ADDRESS=
+NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS=
+NEXT_PUBLIC_GAME_CONTRACT_ADDRESS=
 ```
 
 Then, follow the Getting Started section, and go to `http://localhost:3000/mint`
