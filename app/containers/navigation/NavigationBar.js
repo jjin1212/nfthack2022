@@ -1,8 +1,11 @@
 import React from "react";
+import { ethers } from "ethers";
+
 import { Flex, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { useWalletContext } from "../../context/wallet";
+import { useStakeContext } from "../../context/stake";
 
 
 const NavigationLink = ({ active, disabled, children, onClick, id }) => {
@@ -18,8 +21,24 @@ const NavigationLink = ({ active, disabled, children, onClick, id }) => {
 export const NavigationBar = () => {
   const { currentAddress } = useWalletContext();
   const router = useRouter();
-
   const { pathname } = router;
+  const { gameContractState: game, getStakedBalance } = useStakeContext();
+  const [stakedBalance, setStakedBalance] = React.useState(0);
+
+  React.useEffect(() => {
+    const _getStakedBalance = async () => {
+      const b = await getStakedBalance(game.contract, currentAddress);
+
+      if (b) {
+        const _b = ethers.utils.formatUnits(b, 18);
+        console.log(_b);
+        setStakedBalance(_b);
+      }
+    };
+
+    _getStakedBalance();
+  }, [currentAddress]);
+
 
   const onClick = (id) => {
     router.push(`/${id}`);
@@ -38,7 +57,7 @@ export const NavigationBar = () => {
       <NavigationLink active={pathname === "/inventory"} disabled={!currentAddress} id="inventory" onClick={onClick}>
         Inventory
       </NavigationLink>
-      <NavigationLink active={pathname === "/app"} disabled={!currentAddress} id="app" onClick={onClick}>
+      <NavigationLink active={pathname === "/app"} id="app" onClick={onClick} disabled={!currentAddress || stakedBalance == "0.0"}>
         Play Game
       </NavigationLink>
     </Flex>
