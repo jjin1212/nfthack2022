@@ -1,5 +1,5 @@
 /* eslint-disable no-empty-function */
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { ethers } from "ethers";
 
 import AvatarContract from "../../../artifacts/contracts/AvatarOwnership.sol/AvatarOwnership.json";
@@ -19,99 +19,133 @@ export const MintContext = React.createContext({
 export const useMintContext = () => React.useContext(MintContext);
 
 export const MintContextProvider = ({ children }) => {
-  const [loading, toggleLoading] = useState(false);
-  const [avatarContract, setAvatarContract] = useState(null);
-  const [equipmentContract, setEquipmentContract] = useState(null);
-  const [transaction, setTransaction] = useState(null);
-  const [error, setError] = useState(null);
+  const [avatarState, setAvatarState] = React.useState({
+    contract: null,
+    loading: false,
+    error: null,
+    transaction: null,
+  });
+
+  const [equipmentState, setEquipmentState] = React.useState({
+    contract: null,
+    loading: false,
+    error: null,
+    transaction: null,
+  });
 
   const { currentAddress } = useWalletContext();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const _provider = new ethers.providers.WebSocketProvider(config.alchemy);
     const _avatarContract = new ethers.Contract(
       config.contractAddress,
       AvatarContract.abi,
       _provider,
     );
-    console.log(config);
+
     const _equipmentContract = new ethers.Contract(
       config.equipmentContractAddress,
       EquipmentContract.abi,
       _provider,
     );
 
-    setAvatarContract(_avatarContract);
-    setEquipmentContract(_equipmentContract);
+    setAvatarState(prev => ({
+      ...prev,
+      contract: _avatarContract,
+    }));
+    setEquipmentState(prev => ({
+      ...prev,
+      contract: _equipmentContract,
+    }));
 
-    const listenToMint = (from, to, tokenId, event) => {
+    const listenToAvatarMint = (from, to, tokenId, event) => {
       console.log(`${ from } sent ${ tokenId } to ${ to}`);
-      // The event object contains the verbatim log data, the
-      // EventFragment and functions to fetch the block,
-      // transaction and receipt and event functions
+      // The event object contains the verbatim log data
       console.log(event);
-      toggleLoading(false);
-      setError(null);
-      setTransaction(event);
+      setAvatarState(prev => ({
+        ...prev,
+        loading: false,
+        error: null,
+        transaction: event,
+      }));
     };
 
-    _avatarContract.on("Transfer", listenToMint);
-    _equipmentContract.on("TransferSingle", listenToMint);
+
+    const listenToEquipmentMint = (operator, from, to, tokenId, amount, event) => {
+      console.log(`${ from } sent ${ tokenId } to ${ to}`);
+      // The event object contains the verbatim log data
+      console.log(event);
+      setEquipmentState(prev => ({
+        ...prev,
+        loading: false,
+        error: null,
+        transaction: event,
+      }));
+    };
+
+    _avatarContract.on("Transfer", listenToAvatarMint);
+    _equipmentContract.on("TransferSingle", listenToEquipmentMint);
 
     return function cleanup() {
-      _avatarContract.removeListener("Transfer", listenToMint);
-      _equipmentContract.removeListener("TransferSingle", listenToMint);
+      _avatarContract.removeListener("Transfer", listenToAvatarMint);
+      _equipmentContract.removeListener("TransferSingle", listenToEquipmentMint);
     };
   }, []);
 
-  const _reset = () => {
-    setTransaction(null);
-    setError(null);
-  };
-
   const mintAvatar = async () => {
     if (!currentAddress) return;
-
-    _reset();
-    toggleLoading(true);
+    setAvatarState(prev => ({
+      ...prev,
+      loading: true,
+      error: null,
+      transaction: null,
+    }));
 
     const metamaskProvider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = metamaskProvider.getSigner();
-    const withSigner = avatarContract.connect(signer);
+    const withSigner = avatarState.contract.connect(signer);
 
     // call the mint function of the smart contract
     withSigner.mint().catch((e) => {
       // if user denies, or other errors
-      setError(e.message);
-      toggleLoading(false);
+      setAvatarState(prev => ({
+        ...prev,
+        loading: false,
+        error: e.message,
+      }));
     });
   };
 
   const mintEquipment = async (id) => {
     if (!currentAddress) return;
-
-    _reset();
-    toggleLoading(true);
+    setEquipmentState(prev => ({
+      ...prev,
+      loading: true,
+      error: null,
+      transaction: null,
+    }));
 
     const metamaskProvider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = metamaskProvider.getSigner();
-    const withSigner = equipmentContract.connect(signer);
+    const withSigner = equipmentState.contract.connect(signer);
 
     // call the mint function of the smart contract
     withSigner.mintWithAddress(currentAddress, id, 1).catch((e) => {
       // if user denies, or other errors
-      setError(e.message);
-      toggleLoading(false);
+      setEquipmentState(prev => ({
+        ...prev,
+        loading: false,
+        error: e.message,
+      }));
     });
   };
 
   return (
     <MintContext.Provider value={{
-      loading,
       mintAvatar,
       mintEquipment,
-      transaction,
-      error,
+      avatarState,
+      equipmentState,
     }}>
       {children}
     </MintContext.Provider>
