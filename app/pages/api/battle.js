@@ -34,8 +34,9 @@ export default async function handler(req, res) {
   const reqbody = JSON.parse(req.body);
   const attack = await getAvatarAttack(reqbody.address);
 
-  const result = await fetch("http://localhost:8080/battle", {
+  const result = await fetch("http://localhost:80/battle", {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       "battleId": reqbody.battleId,
       "avatarAttack": attack,
