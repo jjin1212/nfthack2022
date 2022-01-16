@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 
-describe.only("AvatarOwnership contract", function () {
+describe("AvatarOwnership contract", function () {
     let avatarOwnership;
     
     beforeEach(async function () {
