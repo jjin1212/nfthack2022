@@ -14,6 +14,7 @@ export const StakeContext = React.createContext({
   unstakeToken: () => {},
   getBalance: () => {},
   getStakedBalance: () => {},
+  claimReward: () => {},
   tokenContractState: {},
   gameContractState: {},
 });
@@ -154,6 +155,31 @@ export const StakeContextProvider = ({ children }) => {
     });
   };
 
+  const claimReward = (battleId) => {
+    if (!currentAddress) return;
+    console.log(battleId);
+    setGameContractState(prev => ({
+      ...prev,
+      loading: true,
+      error: null,
+      transaction: null,
+    }));
+
+    const metamaskProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = metamaskProvider.getSigner();
+    const withSigner = gameContractState.contract.connect(signer);
+
+    // call the battleEnds function of the smart contract
+    withSigner.battleEnds(battleId).catch((e) => {
+      // if user denies, or other errors
+      setGameContractState(prev => ({
+        ...prev,
+        loading: false,
+        error: e.message,
+      }));
+    });
+  };
+
   return (
     <StakeContext.Provider value={{
       mintToken,
@@ -162,6 +188,7 @@ export const StakeContextProvider = ({ children }) => {
       getStakedBalance,
       tokenContractState,
       gameContractState,
+      claimReward,
     }}>
       {children}
     </StakeContext.Provider>
