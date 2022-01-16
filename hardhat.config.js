@@ -23,7 +23,6 @@ dotenv.config();
 
 module.exports = {
   solidity: '0.8.4',
-  defaultNetwork: "ropsten",
   networks: {
     rinkeby: {
       url: process.env.ALCHEMY_RINKEBY_URL,

@@ -35,15 +35,15 @@ export const MintNFT = () => {
       <Divider />
       <Box py={[4, null, 6]}>
         <Stack direction='row'>
-          <Image src="/sword.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="1"/>
-          <Image src="/bow.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="2"/>
-          <Image src="/hammer.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="3"/>
+          <Image src="/sword.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="0"/>
+          <Image src="/bow.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="1"/>
+          <Image src="/hammer.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="2"/>
         </Stack>
         <Center>
           <Select placeholder='Select Equipment' onChange={(e) => setSelected(e.target.value)}>
-            <option value='1' id="1">Sword</option>
-            <option value='2' id="2">Bow</option>
-            <option value='3' id="3">Hammer</option>
+            <option value='0' id="0">Sword</option>
+            <option value='1' id="1">Bow</option>
+            <option value='2' id="2">Hammer</option>
           </Select>
           <Button disabled={!currentAddress || equip.loading} isLoading={equip.loading} colorScheme='pink' onClick={() => mintEquipment(parseInt(selected))} margin="auto">
             Mint

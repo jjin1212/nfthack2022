@@ -3,7 +3,7 @@ import { Flex } from "@chakra-ui/react";
 
 import { MintContextProviderWrapper } from "../context/mint";
 import { NavigationBar } from "../containers/navigation";
-import { MintNFT } from "../containers/mint-nft";
+import { MintNFT } from "../containers/mint";
 
 const Mint = () => {
   return (
