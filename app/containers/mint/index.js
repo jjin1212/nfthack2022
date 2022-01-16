@@ -1,7 +1,7 @@
 import { MintNFT } from "./MintNFT";
-import { MintToken } from "./MintToken";
+import { MintAndStakeToken } from "./MintAndStakeToken";
 
 export {
   MintNFT,
-  MintToken,
+  MintAndStakeToken,
 };
