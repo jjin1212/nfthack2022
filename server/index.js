@@ -16,6 +16,10 @@ const app = express();
 const AVATAR = 'AVATAR';
 const CPU = 'CPU';
 
+// middleware
+app.use(express.json());
+app.use(express.urlencoded());
+
 function getRandomMultiplierWithRange(min, max) { // min and max included 
     let randNum = Math.floor(Math.random() * (max - min + 1) + min);
     return randNum / 100;
@@ -24,7 +28,7 @@ function getRandomMultiplierWithRange(min, max) { // min and max included
 function battle(battle_id, avatarHp, cpuHp, avatarAttack, cpuAttack) {
     // Make the game more favorable for the avatar
     var dmgFromAvatar = avatarAttack * getRandomMultiplierWithRange(70,100);
-    var dmgFromCpu = cpuAttack * getRandomMultiplierWithRange(40,100);
+    var dmgFromCpu = cpuAttack * getRandomMultiplierWithRange(70,100);
 
     var whoWon = ''
     cpuHp -= dmgFromAvatar;
@@ -59,9 +63,14 @@ function battle(battle_id, avatarHp, cpuHp, avatarAttack, cpuAttack) {
     }
 }
 
+app.get("/", async (req, res) => {
+    res.send("hello");
+})
+
 // This will get called when we click "attack" in game AND when CPU is ready to attack
 app.post("/battle", urlencodedParser, async (req, res) => {
     req = req.body
+
     var battleId = req.battleId;
     var avatarAttack = req.avatarAttack;
 
@@ -71,18 +80,31 @@ app.post("/battle", urlencodedParser, async (req, res) => {
 
     // Fetch battle info from DB
     fetched_battle_info = await db.fetchBattleInfo(battleId)
+    console.log("fetched_battle_info: \n", fetched_battle_info);
     if (fetched_battle_info !== undefined ) {
         avatarHp = fetched_battle_info.avatarHp;
         cpuHp = fetched_battle_info.cpuHp;
-        cpuAttack = fetched_battle_info.cpuHp;
     } else {
         avatarHp = req.avatarHp;
         // to start off make cpuHp/cpuAttack a bit less than hero
-        cpuHp = avatarHp - 1;
-        cpuAttack = avatarAttack - 1;
+        cpuHp = avatarHp * getRandomMultiplierWithRange(80, 100);
     }
-    
+    cpuAttack = avatarAttack * getRandomMultiplierWithRange(80, 90);
+
+    console.log("---------------- \n");
+    console.log("Before \n");
+    console.log("avatarHp: ", avatarHp, "\n");
+    console.log("cpuHp: ", cpuHp, "\n");
+    console.log("---------------- \n");
+
     results = battle(battleId, avatarHp, cpuHp, avatarAttack, cpuAttack);
+
+    console.log("---------------- \n");
+    console.log("After \n");
+    console.log("avatarHp: ", results.avatarHp, "\n");
+    console.log("cpuHp: ", results.cpuHp, "\n");
+    console.log("---------------- \n");
+
     db.insertBattleInfo(
         battleId,
         results.cpuHp, 
