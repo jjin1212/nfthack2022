@@ -60,7 +60,7 @@ export const MintContextProvider = ({ children }) => {
 
     return function cleanup() {
       _avatarContract.removeListener("Transfer", listenToMint);
-      _equipmentContract.removeListener("Transfer", listenToMint);
+      _equipmentContract.removeListener("TransferSingle", listenToMint);
     };
   }, []);
 

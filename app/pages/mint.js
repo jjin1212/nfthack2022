@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import { MintContextProviderWrapper } from "../context/mint";
 import { NavigationBar } from "../containers/navigation";
