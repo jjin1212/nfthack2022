@@ -9,11 +9,11 @@ import { useMintContext } from "../../context/mint";
  */
 export const MintNFT = () => {
   const { currentAddress } = useWalletContext();
-  const { loading, mintNft, transaction, error } = useMintContext();
+  const { loading, mintAvatar, transaction, error } = useMintContext();
   return (
     <>
       <Image src="https://i.pinimg.com/736x/78/75/13/787513e1c0e5abe576350998ca659414.jpg" width={["90%", null, "auto"]} margin="auto" mb={[2, null, 5]} borderRadius="2xl"/>
-      <Button disabled={!currentAddress || loading} isLoading={loading} colorScheme='pink' onClick={mintNft}>
+      <Button disabled={!currentAddress || loading} isLoading={loading} colorScheme='pink' onClick={mintAvatar}>
         Mint Avatar
       </Button>
       {error && (
