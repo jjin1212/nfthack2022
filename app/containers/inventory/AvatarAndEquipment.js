@@ -35,17 +35,17 @@ export const AvatarAndEquipment = () => {
         <Center mb={3}>
           <Text bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize="xl" fontWeight={"semibold"}>You have {avatarState.count} Avatar NFT</Text>
         </Center>
-        <Image src="https://i.pinimg.com/736x/78/75/13/787513e1c0e5abe576350998ca659414.jpg" width={["90%", null, "auto"]} margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32}/>
+        <Image src="character1.png" width={["90%", null, "auto"]} margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32}/>
       </Box>
       <Divider />
       <Box py={[4, null, 6]}>
         <Center mb={3}>
-          <Text bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize="xl" fontWeight={"semibold"}>You have {get(equipmentState, "count[0]")} Sword NFT, {get(equipmentState, "count[1]")} Bow NFT, {get(equipmentState, "count[2]")} Hammer NFT</Text>
+          <Text bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize="xl" fontWeight={"semibold"}>You have {get(equipmentState, "count[0]")} Sword NFT, {get(equipmentState, "count[1]")} Corndog NFT, {get(equipmentState, "count[2]")} Hammer NFT</Text>
         </Center>
         <Stack direction='row' alignItems={"space-between"} spacing='32px'>
-          <Image src="/sword.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="0"/>
-          <Image src="/bow.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="1"/>
-          <Image src="/hammer.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="2"/>
+          <Image src="/weapons_milk.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="0"/>
+          <Image src="/weapons_corndog.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="1"/>
+          <Image src="/weapons_tomato.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="2"/>
         </Stack>
       </Box>
     </Flex>

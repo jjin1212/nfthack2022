@@ -16,7 +16,7 @@ export const MintNFT = () => {
   return (
     <Flex width={"100%"} flexDir={"column"}>
       <Box py={[4, null, 6]}>
-        <Image src="https://i.pinimg.com/736x/78/75/13/787513e1c0e5abe576350998ca659414.jpg" width={["90%", null, "auto"]} margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32}/>
+        <Image src="character1.png" width={["90%", null, "auto"]} margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32}/>
         <Center>
           <Button disabled={!currentAddress || avatar.loading} isLoading={avatar.loading} colorScheme='pink' onClick={mintAvatar}>
             Mint Avatar
@@ -35,15 +35,15 @@ export const MintNFT = () => {
       <Divider />
       <Box py={[4, null, 6]}>
         <Stack direction='row'>
-          <Image src="/sword.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="0"/>
-          <Image src="/bow.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="1"/>
-          <Image src="/hammer.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="2"/>
+          <Image src="/weapons_milk.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="0"/>
+          <Image src="/weapons_corndog.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="1"/>
+          <Image src="/weapons_tomato.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="2"/>
         </Stack>
         <Center>
           <Select placeholder='Select Equipment' onChange={(e) => setSelected(e.target.value)}>
-            <option value='0' id="0">Sword</option>
-            <option value='1' id="1">Bow</option>
-            <option value='2' id="2">Hammer</option>
+            <option value='0' id="0">Milk</option>
+            <option value='1' id="1">Corndog</option>
+            <option value='2' id="2">Tomato</option>
           </Select>
           <Button disabled={!currentAddress || equip.loading} isLoading={equip.loading} colorScheme='pink' onClick={() => mintEquipment(parseInt(selected))} margin="auto">
             Mint
