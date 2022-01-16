@@ -1,24 +1,24 @@
 import React from "react";
 import { Flex } from "@chakra-ui/react";
 
-import { MintContextProviderWrapper } from "../context/mint";
+import { StakeContextProviderWrapper } from "../context/stake";
 import { NavigationBar } from "../containers/navigation";
-import { MintNFT } from "../containers/mint";
+import { MintToken } from "../containers/mint";
 
-const Mint = () => {
+const Stake = () => {
   return (
     <Flex height="100vh" flexDir={"column"} maxWidth={["100%", null, "640px"]} margin="auto">
       <NavigationBar/>
       <Flex justifyContent="center" m="auto" flexDir={"column"}>
-        <MintNFT/>
+        <MintToken/>
       </Flex>
     </Flex>
   );
 };
-export default function MintWrapper() {
+export default function StakeWrapper() {
   return (
-    <MintContextProviderWrapper>
-      <Mint/>
-    </MintContextProviderWrapper>
+    <StakeContextProviderWrapper>
+      <Stake/>
+    </StakeContextProviderWrapper>
   );
 }
