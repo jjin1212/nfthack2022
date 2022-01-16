@@ -43,4 +43,14 @@ contract AvatarOwnership is ERC721Enumerable, AvatarModification {
         Avatar storage avatar = avatars[avatarId];
         return (avatar.level, avatar.attackPoints, avatar.hp, avatar.xp);
     }
+
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        return string(
+            abi.encodePacked(
+                "ipfs://QmQNjSDoB86gcEfeacQMtKVH3vGDgq6HW1GStn4f82DyhB/",
+                Strings.toString(tokenId),
+                ".json"
+            )
+        );
+    }
 }
