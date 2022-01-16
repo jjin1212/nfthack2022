@@ -123,6 +123,15 @@ export const MintContextProvider = ({ children }) => {
     return ethers.BigNumber.from(total).toString();
   };
 
+  const getEquipmentByAddress = async (address) => {
+    if (!address) return;
+    const totalOne = equipmentState.contract.balanceOf(address, 0);
+    const totalTwo = equipmentState.contract.balanceOf(address, 1);
+    const totalThree = equipmentState.contract.balanceOf(address, 2);
+    const total = await Promise.all([totalOne, totalTwo, totalThree]);
+    return total.map(t => ethers.BigNumber.from(t).toString());
+  };
+
   const mintEquipment = async (id) => {
     if (!currentAddress) return;
     setEquipmentState(prev => ({
@@ -154,6 +163,7 @@ export const MintContextProvider = ({ children }) => {
       avatarState,
       equipmentState,
       getAvatarsByAddress,
+      getEquipmentByAddress,
     }}>
       {children}
     </MintContext.Provider>
