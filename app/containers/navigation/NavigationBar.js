@@ -32,6 +32,9 @@ export const NavigationBar = () => {
       <NavigationLink active={pathname === "/mint"} disabled={!currentAddress} id="mint" onClick={onClick}>
         Mint
       </NavigationLink>
+      <NavigationLink active={pathname === "/stake"} disabled={!currentAddress} id="stake" onClick={onClick}>
+        Stake
+      </NavigationLink>
       <NavigationLink active={pathname === "/inventory"} disabled={!currentAddress} id="inventory" onClick={onClick}>
         Inventory
       </NavigationLink>
