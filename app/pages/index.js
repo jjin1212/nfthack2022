@@ -4,6 +4,7 @@ import { Text, Flex } from "@chakra-ui/react";
 import { WalletContextProvider } from "../context/wallet";
 import { ConnectToWallets } from "../containers/wallet";
 import { NavigationBar } from "../containers/navigation";
+import { StakeContextProvider } from "../context/stake";
 
 const Home = () => {
   return (
@@ -21,7 +22,9 @@ const Home = () => {
 export default function HomeWrapper() {
   return (
     <WalletContextProvider>
-      <Home/>
+      <StakeContextProvider>
+        <Home/>
+      </StakeContextProvider>
     </WalletContextProvider>
   );
 }

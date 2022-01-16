@@ -4,6 +4,7 @@ import { Flex } from "@chakra-ui/react";
 import { MintContextProviderWrapper } from "../context/mint";
 import { NavigationBar } from "../containers/navigation";
 import { AvatarAndEquipment } from "../containers/inventory";
+import { StakeContextProvider } from "../context/stake";
 
 const Inventory = () => {
   return (
@@ -18,7 +19,9 @@ const Inventory = () => {
 export default function MintWrapper() {
   return (
     <MintContextProviderWrapper>
-      <Inventory/>
+      <StakeContextProvider>
+        <Inventory/>
+      </StakeContextProvider>
     </MintContextProviderWrapper>
   );
 }

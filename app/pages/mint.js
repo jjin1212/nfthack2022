@@ -2,6 +2,7 @@ import React from "react";
 import { Flex } from "@chakra-ui/react";
 
 import { MintContextProviderWrapper } from "../context/mint";
+import { StakeContextProvider } from "../context/stake";
 import { NavigationBar } from "../containers/navigation";
 import { MintNFT } from "../containers/mint";
 
@@ -18,7 +19,9 @@ const Mint = () => {
 export default function MintWrapper() {
   return (
     <MintContextProviderWrapper>
-      <Mint/>
+      <StakeContextProvider>
+        <Mint/>
+      </StakeContextProvider>
     </MintContextProviderWrapper>
   );
 }
