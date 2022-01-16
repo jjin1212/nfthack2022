@@ -14,7 +14,9 @@ export const StakeContext = React.createContext({
   unstakeToken: () => {},
   transaction: null,
   error: null,
+  getBalance: () => {},
 });
+
 
 export const useStakeContext = () => React.useContext(StakeContext);
 
@@ -41,6 +43,7 @@ export const StakeContextProvider = ({ children }) => {
       contract: _tokenContract,
     }));
 
+
     const listenToTokenMint = (from, to, tokenId, event) => {
       console.log(`${ from } sent ${ tokenId } to ${ to}`);
       // The event object contains the verbatim log data
@@ -60,6 +63,12 @@ export const StakeContextProvider = ({ children }) => {
     };
   }, []);
 
+  const getBalance = async (contract, address) => {
+    if (!address || !contract) return;
+    const tokenBalanceBN = await contract.balanceOf(address);
+    return tokenBalanceBN;
+  };
+
   const mintToken = async () => {
     if (!currentAddress) return;
     setTokenState(prev => ({
@@ -74,7 +83,7 @@ export const StakeContextProvider = ({ children }) => {
     const withSigner = tokenState.contract.connect(signer);
 
     // call the mint function of the smart contract
-    withSigner.mint(100).catch((e) => {
+    withSigner.mint(ethers.BigNumber.from("100000000000000")).catch((e) => {
       // if user denies, or other errors
       setTokenState(prev => ({
         ...prev,
@@ -87,6 +96,7 @@ export const StakeContextProvider = ({ children }) => {
   return (
     <StakeContext.Provider value={{
       mintToken,
+      getBalance,
       ...tokenState,
     }}>
       {children}
