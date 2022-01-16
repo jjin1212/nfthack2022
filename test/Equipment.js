@@ -8,15 +8,13 @@ describe("Equipment contract", function () {
 
     beforeEach(async function () {
         const equipmentContractFactory = await ethers.getContractFactory("EquipmentContract");
-        attackBoosts = [2, 6, 10];
-        hpBoosts = [20, 30, 40];
-        equipment = await equipmentContractFactory.deploy(attackBoosts, hpBoosts);
+        equipment = await equipmentContractFactory.deploy();
     })
 
     it("Check Constructor", async function () {
         for (let i = 0; i < 3; i++) {
-            expect(await equipment.equipAttack(i)).to.equal(attackBoosts[i])
-            expect(await equipment.equipHp(i)).to.equal(hpBoosts[i])
+            expect(await equipment.equipAttack(i)).to.equal(await equipment.attackBoosts(i))
+            expect(await equipment.equipHp(i)).to.equal(await equipment.hpBoosts(i))
         }
     });
     it("mint function", async function() {

@@ -5,11 +5,9 @@ async function main() {
     const equipmentFactory = await ethers.getContractFactory("EquipmentContract")
     const avatarFactory = await ethers.getContractFactory("AvatarOwnership")
     const randGeneratorFactory = await ethers.getContractFactory("RandomNumberConsumer")
-    attackBoosts = [2, 6, 10];
-    hpBoosts = [20, 30, 40];
     token = await tokenFactory.deploy();
     await token.deployed()
-    equipment = await equipmentFactory.deploy(attackBoosts, hpBoosts);
+    equipment = await equipmentFactory.deploy();
     await equipment.deployed()
     avatar = await avatarFactory.deploy(1000);
     await avatar.deployed()
