@@ -21,7 +21,7 @@ const getAvatarAttack = async (address) => {
   const total = await Promise.all([totalOne, totalTwo, totalThree]);
   const totalInNumber = total.map(t => ethers.BigNumber.from(t).toString());
 
-  const milkPower = 10;
+  const milkPower = 20;
   const corndogPower = 9;
   const tomatoPower = 12;
 
