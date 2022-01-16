@@ -43,4 +43,11 @@ contract ExposedAvatarFactory {
 
     Avatar[] public avatars;
     mapping(uint256 => address) public avatarToOwner;
+
+    function _createAvatarAndGetId() public returns (uint256) {
+        avatars.push(Avatar(0, 10, 100, 0));
+        uint256 id = avatars.length - 1;
+        avatarToOwner[id] = msg.sender;
+        return id;
+    }
 }

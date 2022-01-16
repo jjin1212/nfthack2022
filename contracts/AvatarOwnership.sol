@@ -26,7 +26,6 @@ contract AvatarOwnership is ERC721Enumerable, AvatarModification {
         require(avatars.length < maxSupply, "Sold out");
 
         uint256 tokenId = _createAvatarAndGetId();
-        avatarToOwner[tokenId] = msg.sender;
         _safeMint(msg.sender, tokenId);
     }
 
