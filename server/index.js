@@ -97,7 +97,7 @@ app.post("/battle", urlencodedParser, async (req, res) => {
     console.log("cpuHp: ", cpuHp, "\n");
     console.log("---------------- \n");
 
-    results = battle(battleId, avatarHp, cpuHp, avatarAttack, cpuAttack);
+    results = await battle(battleId, avatarHp, cpuHp, avatarAttack, cpuAttack);
 
     console.log("---------------- \n");
     console.log("After \n");
@@ -105,7 +105,7 @@ app.post("/battle", urlencodedParser, async (req, res) => {
     console.log("cpuHp: ", results.cpuHp, "\n");
     console.log("---------------- \n");
 
-    db.insertBattleInfo(
+    await db.insertBattleInfo(
         battleId,
         results.cpuHp, 
         results.avatarHp,
@@ -113,6 +113,19 @@ app.post("/battle", urlencodedParser, async (req, res) => {
     )
     res.send(results);
 });
+
+
+app.get("/get_result", urlencodedParser, async (req, res) => {
+    req = req.query
+    console.log(req)
+    var battleId = req.battleId;
+    console.log(battleId)
+    
+    fetched_battle_info = await db.fetchBattleInfo(battleId)
+    console.log(fetched_battle_info)
+    result = fetched_battle_info.battle_result == 'AVATAR' ? 1 : 2
+    res.send({'result': result})
+})
 
 
 // Starting the server on the 80 port

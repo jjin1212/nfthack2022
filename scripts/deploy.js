@@ -5,6 +5,7 @@ async function main() {
     const equipmentFactory = await ethers.getContractFactory("EquipmentContract")
     const avatarFactory = await ethers.getContractFactory("AvatarOwnership")
     const randGeneratorFactory = await ethers.getContractFactory("RandomNumberConsumer")
+    const chainlinkClientFactory = await ethers.getContractFactory("APIConsumer")
     token = await tokenFactory.deploy();
     await token.deployed()
     equipment = await equipmentFactory.deploy();
@@ -13,11 +14,14 @@ async function main() {
     await avatar.deployed()
     randGenerator = await randGeneratorFactory.deploy();
     await randGenerator.deployed()
+    chainlinkClient = await chainlinkClientFactory.deploy();
+    await chainlinkClient.deployed
     game = await gameFactory.deploy(
         token.address,
         equipment.address,
         avatar.address,
-        randGenerator.address
+        randGenerator.address,
+        chainlinkClient.address
     );
     await game.deployed()
 
@@ -25,6 +29,7 @@ async function main() {
     console.log("Equipment deployed to:", equipment.address);
     console.log("Avatar deployed to:", avatar.address);
     console.log("Rand generator deployed to:", randGenerator.address);
+    console.log("Chainlink client deployed to:", chainlinkClient.address);
     console.log("Game deployed to:", game.address);
   }
   

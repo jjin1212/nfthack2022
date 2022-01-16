@@ -9,12 +9,15 @@ import "./Equipment.sol";
 import "./RandomNumberConsumer.sol";
 import "./AvatarOwnership.sol";
 import "./Token.sol";
+import "./ChainlinkClient.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract Game is Ownable {
     TokenContract token;
     EquipmentContract equip;
     AvatarOwnership avatar;
     RandomNumberConsumer randGenerator;
+    APIConsumer chainlink;
 
     mapping(address => uint256) public stakedTokens;
 
@@ -22,12 +25,14 @@ contract Game is Ownable {
         TokenContract _tokenAddress,
         EquipmentContract _equip,
         AvatarOwnership _avatar,
-        RandomNumberConsumer _randGenerator
+        RandomNumberConsumer _randGenerator,
+        APIConsumer _chainlink
     ) {
         token = _tokenAddress;
         equip = _equip;
         avatar = _avatar;
         randGenerator = _randGenerator;
+        chainlink = _chainlink;
     }
 
     function stake(uint256 _amount) external payable {
@@ -47,15 +52,25 @@ contract Game is Ownable {
         stakedTokens[msg.sender] -= _amount;
     }
 
+    function fetchBattleResults(uint _battleId) external {
+        string memory url = string(
+                                abi.encodePacked(
+                                    "http://b8c5-99-241-141-46.ngrok.io/get_result?battleId=",
+                                    Strings.toString(_battleId)
+                                )
+                            );
+        chainlink.requestData(url, _battleId);
+    }
+
     // Give user their tokens * 2 + one new equipment
-    function battleResults(uint256 _battleId) external {
-        // TODO check if battleId belongs to the sender either here or Backend
-
-        // TODO fix rand with VRF and figure out how to mock in test
+    function battleEnds(uint _battleId) external {
+        
+        //require(chainlink.idToResult(_battleId) != 0, "Still pending fetching the result");
         //uint rand = _getRandFromGenerator(_battleId);
-        uint256 rand = 0;
+        //bool userWon = chainlink.idToResult(_battleId) == 1 ? true : false;
 
-        // TODO: fetch battle result from Backend
+        //Chainlink doesn't work for Rinkeby :(, thus we have to hard coding these values
+        uint256 rand = 0;
         bool userWon = true;
         uint256 stakedAmount = stakedTokens[msg.sender];
 
