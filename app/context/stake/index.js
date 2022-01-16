@@ -64,8 +64,6 @@ export const StakeContextProvider = ({ children }) => {
       console.log(`${ from } sent ${ tokenId } to ${ to}`);
       // The event object contains the verbatim log data
       console.log(event);
-      console.log("from === currentAddress", from === currentAddress);
-      console.log(currentAddress);
 
       // staking event
       if (to.toString() === config.gameContractAddress) {
