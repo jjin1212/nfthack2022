@@ -10,6 +10,7 @@ import "./RandomNumberConsumer.sol";
 import "./AvatarOwnership.sol";
 import "./Token.sol";
 import "./ChainlinkClient.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract Game is Ownable {
     TokenContract token;
@@ -52,7 +53,12 @@ contract Game is Ownable {
     }
 
     function fetchBattleResults(uint _battleId) external {
-        string memory url = 'http://b8c5-99-241-141-46.ngrok.io/get_result?battleId=9';
+        string memory url = string(
+                                abi.encodePacked(
+                                    "http://b8c5-99-241-141-46.ngrok.io/get_result?battleId=",
+                                    Strings.toString(_battleId)
+                                )
+                            );
         chainlink.requestData(url, _battleId);
     }
 

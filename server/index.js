@@ -116,7 +116,7 @@ app.post("/battle", urlencodedParser, async (req, res) => {
 
 
 app.get("/get_result", urlencodedParser, async (req, res) => {
-    req = req.body
+    req = req.query
     console.log(req)
     var battleId = req.battleId;
     console.log(battleId)

@@ -11,11 +11,8 @@ resp = requests.post(
 
 print(resp.json())
 
-resp = requests.get(
-    'http://b8c5-99-241-141-46.ngrok.io/get_result',
-    data={
-        'battleId': 9
-    }
-)
+# resp = requests.get(
+#     'http://368b-99-241-141-46.ngrok.io/get_result?battleId=9',
+# )
 
 print(resp.json())
