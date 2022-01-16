@@ -40,7 +40,7 @@ export const AvatarAndEquipment = () => {
       <Divider />
       <Box py={[4, null, 6]}>
         <Center mb={3}>
-          <Text bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize="xl" fontWeight={"semibold"}>You have {get(equipmentState, "count[0]")} Milk NFT, {get(equipmentState, "count[1]")} Corndog NFT, {get(equipmentState, "count[2]")} Hammer NFT</Text>
+          <Text bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip='text' fontSize="xl" fontWeight={"semibold"}>You have {get(equipmentState, "count[0]")} Milk NFT, {get(equipmentState, "count[1]")} Corndog NFT, {get(equipmentState, "count[2]")} Tomato NFT</Text>
         </Center>
         <Stack direction='row' alignItems={"space-between"} spacing='32px'>
           <Image src="/weapons_milk.png" margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32} width={32} id="0"/>
