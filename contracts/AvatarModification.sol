@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "./AvatarFactory.sol";
 
+
 contract AvatarModification is AvatarFactory {
     modifier onlyOwnerOf(uint256 _avatarId) {
         require(msg.sender == avatarToOwner[_avatarId]);

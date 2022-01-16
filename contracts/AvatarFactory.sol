@@ -18,15 +18,7 @@ contract AvatarFactory is Ownable {
     }
 
     Avatar[] public avatars;
-
     mapping(uint256 => address) public avatarToOwner;
-
-    function _createAvatarAndGetId() internal returns (uint256) {
-        avatars.push(Avatar(0, 10, 10, 0));
-        uint256 id = avatars.length - 1;
-        avatarToOwner[id] = msg.sender;
-        return id;
-    }
 }
 
 // For testing purposes, since we can't test internal functions
@@ -43,13 +35,5 @@ contract ExposedAvatarFactory {
     }
 
     Avatar[] public avatars;
-
     mapping(uint256 => address) public avatarToOwner;
-
-    function createAvatarAndGetId() public returns (uint256) {
-        avatars.push(Avatar(0, 10, 10, 0));
-        uint256 id = avatars.length - 1;
-        avatarToOwner[id] = msg.sender;
-        return id;
-    }
 }
