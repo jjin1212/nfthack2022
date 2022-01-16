@@ -1,5 +1,13 @@
 // Importing express module
 var express = require("express");
+var bodyParser = require('body-parser')
+var db = require("./db");
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+// create application/json parser
+var jsonParser = bodyParser.json()
 
 // Importing mongoose module
 var mongoose = require("mongoose");
@@ -13,25 +21,21 @@ function getRandomMultiplierWithRange(min, max) { // min and max included
     return randNum / 100;
 }
 
-function battle(avatarHp, cpuHp, avatarAttack, cpuAttack) {
+function battle(battle_id, avatarHp, cpuHp, avatarAttack, cpuAttack) {
     // Make the game more favorable for the avatar
     var dmgFromAvatar = avatarAttack * getRandomMultiplierWithRange(70,100);
     var dmgFromCpu = cpuAttack * getRandomMultiplierWithRange(40,100);
 
-    
-    cpuHp -= dmgFromAvatar;
-    avatarHp -= dmgFromCpu;
-
-    // Check if we have winners, the order matters, check CPU's hp first.
-    // If one party won, we need to add back the dmg inflicted for the other party.
-    // This is kind of a hack since we are trying to make 2 turns in one go. Let me know if you have qs
     var whoWon = ''
-    if (cpuHp < 0) {
+    cpuHp -= dmgFromAvatar;
+    if (cpuHp <= 0) {
         whoWon = AVATAR;
-        avatarHp += dmgFromCpu;
-    } else if (avatarHp < 0) {
-        whoWon = CPU;
-        cpuHp += dmgFromAvatar;
+    }
+    else {
+        avatarHp -= dmgFromCpu;
+        if (avatarHp <= 0) {
+            whoWon = CPU;
+        }
     }
 
     var tokenBoostMultiplier = 1;
@@ -55,45 +59,39 @@ function battle(avatarHp, cpuHp, avatarAttack, cpuAttack) {
     }
 }
 
-// Handling the get request
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
-
-// When avatar attacks and gets 200 from /battle endpoint, it should call this /fetchData
-// to update the UI then call battle immediately after with isAvatarTurn = False.
-// Repeat till whoWon field is populated with winner
-app.get("/fetchData", (req, res) => {
-    // return data to FE
-})
-
 // This will get called when we click "attack" in game AND when CPU is ready to attack
-app.post("/battle", (req, res) => {
+app.post("/battle", urlencodedParser, async (req, res) => {
+    req = req.body
     var battleId = req.battleId;
     var avatarAttack = req.avatarAttack;
 
     var avatarHp = 0;
     var cpuHp = 0;
     var cpuAttack = 0;
-    // fetch battleId from db
-    // var battleDb = db.fetch(battleId);
-    if (battleDb) {
-        // fill in these fields
-        avatarHp = req.avatarHp;
-        cpuHp = db.cpuHp;
-        cpuAttack = db.cpuHp;
+
+    // Fetch battle info from DB
+    fetched_battle_info = await db.fetchBattleInfo(battleId)
+    if (fetched_battle_info !== undefined ) {
+        avatarHp = fetched_battle_info.avatarHp;
+        cpuHp = fetched_battle_info.cpuHp;
+        cpuAttack = fetched_battle_info.cpuHp;
     } else {
-        avatarHp = req.avatarHp;    
+        avatarHp = req.avatarHp;
         // to start off make cpuHp/cpuAttack a bit less than hero
         cpuHp = avatarHp - 1;
         cpuAttack = avatarAttack - 1;
-    } 
+    }
     
-    results = battle(avatarHp, cpuHp, avatarAttack, cpuAttack);
-    // update db
-    // send 200 success back to FE, with results
+    results = battle(battleId, avatarHp, cpuHp, avatarAttack, cpuAttack);
+    db.insertBattleInfo(
+        battleId,
+        results.cpuHp, 
+        results.avatarHp,
+        results.whoWon
+    )
     res.send(results);
 });
+
 
 // Starting the server on the 80 port
 app.listen(port, () => {
