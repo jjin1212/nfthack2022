@@ -2,15 +2,16 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 
-import myContract from "../../../artifacts/contracts/AvatarOwnership.sol/AvatarOwnership.json";
-const contractInterface = myContract.abi;
+import AvatarContract from "../../../artifacts/contracts/AvatarOwnership.sol/AvatarOwnership.json";
+import EquipmentContract from "../../../artifacts/contracts/Equipment.sol/EquipmentContract.json";
 
 import { WalletContextProvider, useWalletContext } from "../wallet";
 import { config } from "../../config";
 
 export const MintContext = React.createContext({
   loading: false,
-  mintNft: () => {},
+  mintAvatar: () => {},
+  mintEquipment: () => {},
   transaction: null,
   error: null,
 });
@@ -19,20 +20,29 @@ export const useMintContext = () => React.useContext(MintContext);
 
 export const MintContextProvider = ({ children }) => {
   const [loading, toggleLoading] = useState(false);
-  const [contract, setContract] = useState(null);
+  const [avatarContract, setAvatarContract] = useState(null);
+  const [equipmentContract, setEquipmentContract] = useState(null);
   const [transaction, setTransaction] = useState(null);
   const [error, setError] = useState(null);
+
   const { currentAddress } = useWalletContext();
 
   useEffect(() => {
     const _provider = new ethers.providers.WebSocketProvider(config.alchemy);
-    const _contract = new ethers.Contract(
+    const _avatarContract = new ethers.Contract(
       config.contractAddress,
-      contractInterface,
+      AvatarContract.abi,
+      _provider,
+    );
+    console.log(config);
+    const _equipmentContract = new ethers.Contract(
+      config.equipmentContractAddress,
+      EquipmentContract.abi,
       _provider,
     );
 
-    setContract(_contract);
+    setAvatarContract(_avatarContract);
+    setEquipmentContract(_equipmentContract);
 
     const listenToMint = (from, to, tokenId, event) => {
       console.log(`${ from } sent ${ tokenId } to ${ to}`);
@@ -45,10 +55,12 @@ export const MintContextProvider = ({ children }) => {
       setTransaction(event);
     };
 
-    _contract.on("Transfer", listenToMint);
+    _avatarContract.on("Transfer", listenToMint);
+    _equipmentContract.on("TransferSingle", listenToMint);
 
     return function cleanup() {
-      _contract.removeListener("Transfer", listenToMint);
+      _avatarContract.removeListener("Transfer", listenToMint);
+      _equipmentContract.removeListener("TransferSingle", listenToMint);
     };
   }, []);
 
@@ -57,7 +69,7 @@ export const MintContextProvider = ({ children }) => {
     setError(null);
   };
 
-  const mintNft = async () => {
+  const mintAvatar = async () => {
     if (!currentAddress) return;
 
     _reset();
@@ -65,7 +77,7 @@ export const MintContextProvider = ({ children }) => {
 
     const metamaskProvider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = metamaskProvider.getSigner();
-    const withSigner = contract.connect(signer);
+    const withSigner = avatarContract.connect(signer);
 
     // call the mint function of the smart contract
     withSigner.mint().catch((e) => {
@@ -75,10 +87,29 @@ export const MintContextProvider = ({ children }) => {
     });
   };
 
+  const mintEquipment = async (id) => {
+    if (!currentAddress) return;
+
+    _reset();
+    toggleLoading(true);
+
+    const metamaskProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = metamaskProvider.getSigner();
+    const withSigner = equipmentContract.connect(signer);
+
+    // call the mint function of the smart contract
+    withSigner.mintWithAddress(currentAddress, id, 1).catch((e) => {
+      // if user denies, or other errors
+      setError(e.message);
+      toggleLoading(false);
+    });
+  };
+
   return (
     <MintContext.Provider value={{
       loading,
-      mintNft,
+      mintAvatar,
+      mintEquipment,
       transaction,
       error,
     }}>
