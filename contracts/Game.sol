@@ -64,13 +64,14 @@ contract Game is Ownable {
 
     // Give user their tokens * 2 + one new equipment
     function battleEnds(uint _battleId) external {
-        require(chainlink.idToResult(_battleId) != 0, "Still pending fetching the result");
-
-        // TODO fix rand with VRF and figure out how to mock in test
+        
+        //require(chainlink.idToResult(_battleId) != 0, "Still pending fetching the result");
         //uint rand = _getRandFromGenerator(_battleId);
-        uint256 rand = 0;
+        //bool userWon = chainlink.idToResult(_battleId) == 1 ? true : false;
 
-        bool userWon = chainlink.idToResult(_battleId) == 1 ? true : false;
+        //Chainlink doesn't work for Rinkeby :(, thus we have to hard coding these values
+        uint256 rand = 0;
+        bool userWon = true;
         uint256 stakedAmount = stakedTokens[msg.sender];
 
         if (userWon) {
