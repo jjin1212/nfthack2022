@@ -21,11 +21,11 @@ const getAvatarAttack = async (address) => {
   const total = await Promise.all([totalOne, totalTwo, totalThree]);
   const totalInNumber = total.map(t => ethers.BigNumber.from(t).toString());
 
-  const swordPower = 10;
-  const bowPower = 9;
-  const hammerPower = 12;
+  const milkPower = 10;
+  const corndogPower = 9;
+  const tomatoPower = 12;
 
-  const attack = (parseInt(totalInNumber[0]) * swordPower) + (parseInt(totalInNumber[1]) * bowPower) + (parseInt(totalInNumber[2]) * hammerPower);
+  const attack = (parseInt(totalInNumber[0]) * milkPower) + (parseInt(totalInNumber[1]) * corndogPower) + (parseInt(totalInNumber[2]) * tomatoPower);
 
   return attack;
 };

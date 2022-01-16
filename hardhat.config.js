@@ -31,7 +31,15 @@ module.exports = {
     ropsten: {
       url: process.env.ALCHEMY_ROPSTEN_URL,
       accounts: [process.env.PRIVATE_KEY],
-    }
+    },
+    matic: {
+      url: "https://rpc-mumbai.maticvigil.com",
+      accounts: [process.env.PRIVATE_KEY]
+    },
+    testnet: {
+      url: `https://api.s0.b.hmny.io`,
+      accounts: [`0x${HARMONY_PRIVATE_KEY}`]
+    },
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_KEY
