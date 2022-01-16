@@ -25,7 +25,7 @@ async function insertBattleInfo(
       await client.connect();
       const database = client.db("mydb");
       const table = database.collection("battle_results");
-      table.remove({battle_id: battle_id})
+      await table.deleteOne({battle_id: battle_id});
       // create a document to insert
       const battle_result = {
         battle_id: battle_id,
