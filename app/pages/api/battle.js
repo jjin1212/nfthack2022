@@ -21,9 +21,9 @@ const getAvatarAttack = async (address) => {
   const total = await Promise.all([totalOne, totalTwo, totalThree]);
   const totalInNumber = total.map(t => ethers.BigNumber.from(t).toString());
 
-  const swordPower = 20;
-  const bowPower = 90;
-  const hammerPower = 40;
+  const swordPower = 10;
+  const bowPower = 9;
+  const hammerPower = 12;
 
   const attack = (parseInt(totalInNumber[0]) * swordPower) + (parseInt(totalInNumber[1]) * bowPower) + (parseInt(totalInNumber[2]) * hammerPower);
 
