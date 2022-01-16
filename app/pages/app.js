@@ -5,6 +5,25 @@ import { WalletContextProvider } from "../context/wallet";
 import { NavigationBar } from "../containers/navigation";
 
 const App = () => {
+  const [state, setState] = React.useState("idle");
+  const videoRef = React.useRef(null);
+
+  React.useState(() => {
+    if (videoRef && videoRef.current) {
+      videoRef.current.addEventListener("ended", () => {
+        setState("idle");
+        console.log(state);
+      });
+    }
+  }, [videoRef.current]);
+
+  const onAttackClick = () => {
+    setState("animation");
+    console.log(videoRef);
+    videoRef.current.play();
+  };
+
+
   return (
     <Flex height="100vh" flexDir={"column"} maxWidth={["100%", null, "640px"]} margin="auto">
       <NavigationBar/>
@@ -14,12 +33,13 @@ const App = () => {
           <Image src="/character.png" position={"absolute"} width="100%" height="auto"/>
           <Image src="/monster.png" position={"absolute"} width="100%" height="auto"/>
           <Image src="/info-cards.png" position={"absolute"} width="100%" height="auto"/>
+          <video type="video/mp4" src="/animation-test.mp4" ref={videoRef} autoPlay={true} style={{ zIndex: 99, position: "absolute", display: state === "idle" ? "none" : "inherit" }}/>
           {/* <Image src="/attack-window.png" position={"absolute"} width="100%" height="auto"/> */}
         </Box>
         <Box p={3} width="100%" backgroundColor={"gray.500"} border="3px solid" borderRadius={"2xl"}>
           <Center p={3}><Text color="black" fontWeight={"bold"}>Your turn</Text></Center>
           <Flex direction="column">
-            <Button backgroundColor={"orange.400"} mb={3}>Attack</Button>
+            <Button backgroundColor={"orange.400"} mb={3} onClick={onAttackClick}>Attack</Button>
             <Button backgroundColor={"orange.400"}>Weapon</Button>
           </Flex>
         </Box>
