@@ -3,25 +3,32 @@ import React from "react";
 import { ethers } from "ethers";
 
 import TokenContract from "../../../artifacts/contracts/Token.sol/TokenContract.json";
+import GameContract from "../../../artifacts/contracts/Game.sol/Game.json";
 
 import { WalletContextProvider, useWalletContext } from "../wallet";
 import { config } from "../../config";
 
 export const StakeContext = React.createContext({
-  loading: false,
   mintToken: () => {},
   stakeToken: () => {},
   unstakeToken: () => {},
-  transaction: null,
-  error: null,
   getBalance: () => {},
+  getStakedBalance: () => {},
+  tokenContractState: {},
+  gameContractState: {},
 });
 
 
 export const useStakeContext = () => React.useContext(StakeContext);
 
 export const StakeContextProvider = ({ children }) => {
-  const [tokenState, setTokenState] = React.useState({
+  const [tokenContractState, setTokenContractState] = React.useState({
+    contract: null,
+    loading: false,
+    error: null,
+    transaction: null,
+  });
+  const [gameContractState, setGameContractState] = React.useState({
     contract: null,
     loading: false,
     error: null,
@@ -37,23 +44,45 @@ export const StakeContextProvider = ({ children }) => {
       TokenContract.abi,
       _provider,
     );
+    const _gameContract = new ethers.Contract(
+      config.gameContractAddress,
+      GameContract.abi,
+      _provider,
+    );
 
-    setTokenState(prev => ({
+    setTokenContractState(prev => ({
       ...prev,
       contract: _tokenContract,
     }));
 
+    setGameContractState(prev => ({
+      ...prev,
+      contract: _gameContract,
+    }));
 
     const listenToTokenMint = (from, to, tokenId, event) => {
       console.log(`${ from } sent ${ tokenId } to ${ to}`);
       // The event object contains the verbatim log data
       console.log(event);
-      setTokenState(prev => ({
-        ...prev,
-        loading: false,
-        error: null,
-        transaction: event,
-      }));
+      console.log("from === currentAddress", from === currentAddress);
+      console.log(currentAddress);
+
+      // staking event
+      if (to.toString() === config.gameContractAddress) {
+        setGameContractState(prev => ({
+          ...prev,
+          loading: false,
+          error: null,
+          transaction: event,
+        }));
+      } else {
+        setTokenContractState(prev => ({
+          ...prev,
+          loading: false,
+          error: null,
+          transaction: event,
+        }));
+      }
     };
 
     _tokenContract.on("Transfer", listenToTokenMint);
@@ -69,9 +98,15 @@ export const StakeContextProvider = ({ children }) => {
     return tokenBalanceBN;
   };
 
+  const getStakedBalance = async (contract, address) => {
+    if (!address || !contract) return;
+    const stakedBalanceBN = await contract.stakedTokens(address);
+    return stakedBalanceBN;
+  };
+
   const mintToken = async () => {
     if (!currentAddress) return;
-    setTokenState(prev => ({
+    setTokenContractState(prev => ({
       ...prev,
       loading: true,
       error: null,
@@ -80,12 +115,38 @@ export const StakeContextProvider = ({ children }) => {
 
     const metamaskProvider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = metamaskProvider.getSigner();
-    const withSigner = tokenState.contract.connect(signer);
+    const withSigner = tokenContractState.contract.connect(signer);
 
     // call the mint function of the smart contract
     withSigner.mint(ethers.BigNumber.from("100000000000000")).catch((e) => {
       // if user denies, or other errors
-      setTokenState(prev => ({
+      setTokenContractState(prev => ({
+        ...prev,
+        loading: false,
+        error: e.message,
+      }));
+    });
+  };
+
+  const stakeToken = async () => {
+    if (!currentAddress) return;
+    setGameContractState(prev => ({
+      ...prev,
+      loading: true,
+      error: null,
+      transaction: null,
+    }));
+
+    const metamaskProvider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = metamaskProvider.getSigner();
+    const withSigner = gameContractState.contract.connect(signer);
+
+    await tokenContractState.contract.connect(signer).approve(config.gameContractAddress, ethers.BigNumber.from("100000000000000"));
+
+    // call the mint function of the smart contract
+    withSigner.stake(ethers.BigNumber.from("100000000000000")).catch((e) => {
+      // if user denies, or other errors
+      setGameContractState(prev => ({
         ...prev,
         loading: false,
         error: e.message,
@@ -97,7 +158,10 @@ export const StakeContextProvider = ({ children }) => {
     <StakeContext.Provider value={{
       mintToken,
       getBalance,
-      ...tokenState,
+      stakeToken,
+      getStakedBalance,
+      tokenContractState,
+      gameContractState,
     }}>
       {children}
     </StakeContext.Provider>

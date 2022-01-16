@@ -3,14 +3,14 @@ import { Flex } from "@chakra-ui/react";
 
 import { StakeContextProviderWrapper } from "../context/stake";
 import { NavigationBar } from "../containers/navigation";
-import { MintToken } from "../containers/mint";
+import { MintAndStakeToken } from "../containers/mint";
 
 const Stake = () => {
   return (
     <Flex height="100vh" flexDir={"column"} maxWidth={["100%", null, "640px"]} margin="auto">
       <NavigationBar/>
       <Flex justifyContent="center" m="auto" flexDir={"column"}>
-        <MintToken/>
+        <MintAndStakeToken/>
       </Flex>
     </Flex>
   );
