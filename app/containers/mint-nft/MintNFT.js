@@ -9,22 +9,22 @@ import { useMintContext } from "../../context/mint";
  */
 export const MintNFT = () => {
   const { currentAddress } = useWalletContext();
-  const { loading, mintAvatar, mintEquipment, transaction, error } = useMintContext();
+  const { avatarState: avatar, equipmentState: equip, mintAvatar, mintEquipment } = useMintContext();
 
-  const [selected, setSelected] = React.useState(1);
+  const [selected, setSelected] = React.useState(null);
 
   return (
     <Flex width={"100%"} flexDir={"column"}>
       <Box py={[4, null, 6]}>
         <Image src="https://i.pinimg.com/736x/78/75/13/787513e1c0e5abe576350998ca659414.jpg" width={["90%", null, "auto"]} margin="auto" mb={[2, null, 5]} borderRadius="2xl" height={32}/>
         <Center>
-          <Button disabled={!currentAddress || loading} isLoading={loading} colorScheme='pink' onClick={mintAvatar}>
+          <Button disabled={!currentAddress || avatar.loading} isLoading={avatar.loading} colorScheme='pink' onClick={mintAvatar}>
             Mint Avatar
           </Button>
-          {error && (
-            <Text color="red" fontSize="xs" mt="4">{error}</Text>
+          {avatar.error && (
+            <Text color="red" fontSize="xs" mt="4">{avatar.error}</Text>
           )}
-          {transaction && (
+          {avatar.transaction && (
             <Alert status='success' variant='subtle'>
               <AlertIcon />
               Successfully minted!
@@ -45,14 +45,14 @@ export const MintNFT = () => {
             <option value='2' id="2">Bow</option>
             <option value='3' id="3">Hammer</option>
           </Select>
-          <Button disabled={!currentAddress || loading} isLoading={loading} colorScheme='pink' onClick={() => mintEquipment(parseInt(selected))} margin="auto">
+          <Button disabled={!currentAddress || equip.loading} isLoading={equip.loading} colorScheme='pink' onClick={() => mintEquipment(parseInt(selected))} margin="auto">
             Mint
           </Button>
         </Center>
-        {error && (
-          <Text color="red" fontSize="xs" mt="4">{error}</Text>
+        {equip.error && (
+          <Text color="red" fontSize="xs" mt="4">{equip.error}</Text>
         )}
-        {transaction && (
+        {equip.transaction && (
           <Alert status='success' variant='subtle'>
             <AlertIcon />
             Successfully minted!
