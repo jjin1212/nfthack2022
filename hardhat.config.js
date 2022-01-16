@@ -25,13 +25,13 @@ module.exports = {
   solidity: '0.8.4',
   defaultNetwork: "ropsten",
   networks: {
-    // rinkeby: {
-    //   url: process.env.ALCHEMY_RINKEBY_URL,
-    //   accounts: [process.env.PRIVATE_KEY],
-    // },
+    rinkeby: {
+      url: process.env.ALCHEMY_RINKEBY_URL,
+      accounts: [process.env.PRIVATE_KEY],
+    },
     ropsten: {
-      url: "https://eth-ropsten.alchemyapi.io/v2/2DUM5x4UP5AkHMuppjyiXqre7ZYOPAm3",
-      accounts: ["3751fefcba86c0798bd192b1c627c55257aa832d8fe80e5f69ca6f926b92fa7b"],
+      url: process.env.ALCHEMY_ROPSTEN_URL,
+      accounts: [process.env.PRIVATE_KEY],
     }
   },
   etherscan: {
