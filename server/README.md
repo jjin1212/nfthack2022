@@ -15,7 +15,7 @@ node index.js
 ```
 
 ## Test
-Option 1
+Option 1: 
 Open another terminal window or tab.
 ```bash
 pip install virtualenv
@@ -24,5 +24,5 @@ python3 -m venv venv
 python test.py
 ```
 
-Option 2
+Option 2: 
 Just curl the endpoint https://localhost:80/battle data={...}
