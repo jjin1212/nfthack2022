@@ -31,7 +31,6 @@ export const NavigationBar = () => {
 
       if (b) {
         const _b = ethers.utils.formatUnits(b, 18);
-        console.log(_b);
         setStakedBalance(_b);
       }
     };
