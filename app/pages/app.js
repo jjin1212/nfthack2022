@@ -1,18 +1,38 @@
 import React from "react";
 import { Image, Flex, Box, Text, Button, Center } from "@chakra-ui/react";
 
-import { WalletContextProvider } from "../context/wallet";
+import { WalletContextProvider, useWalletContext } from "../context/wallet";
 import { NavigationBar } from "../containers/navigation";
 
+
+function randomIntFromInterval(min, max) { // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 const App = () => {
+  const { currentAddress } = useWalletContext();
+
   const [state, setState] = React.useState("idle");
+  const battleId = randomIntFromInterval(1, 100);
+
   const videoRef = React.useRef(null);
 
-  const onAttackClick = () => {
+  const onAttackClick = async () => {
     setState("animation");
     if (videoRef && videoRef.current) {
       videoRef.current.play();
     }
+
+
+    const res = await fetch("/api/battle", {
+      method: "POST",
+      body: JSON.stringify({
+        battleId,
+        address: currentAddress,
+      }),
+    });
+    const resjson = await res.json();
+    console.log(resjson);
   };
 
 
