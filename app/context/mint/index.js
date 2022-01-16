@@ -12,6 +12,7 @@ export const MintContext = React.createContext({
   loading: false,
   mintAvatar: () => {},
   mintEquipment: () => {},
+  getAvatarsByAddress: () => {},
   transaction: null,
   error: null,
 });
@@ -116,6 +117,12 @@ export const MintContextProvider = ({ children }) => {
     });
   };
 
+  const getAvatarsByAddress = async (address) => {
+    if (!address) return;
+    const total = await avatarState.contract.balanceOf(address);
+    return ethers.BigNumber.from(total).toString();
+  };
+
   const mintEquipment = async (id) => {
     if (!currentAddress) return;
     setEquipmentState(prev => ({
@@ -146,6 +153,7 @@ export const MintContextProvider = ({ children }) => {
       mintEquipment,
       avatarState,
       equipmentState,
+      getAvatarsByAddress,
     }}>
       {children}
     </MintContext.Provider>
