@@ -19,7 +19,7 @@ contract APIConsumer is ChainlinkClient {
     bytes32 private jobId;
     uint256 private fee;
 
-    mapping (uint => uint) idToResult;
+    mapping (uint => uint) public idToResult;
     mapping (bytes32 => uint) requestIdToId;
     
     /**
