@@ -70,6 +70,7 @@ app.get("/", async (req, res) => {
 // This will get called when we click "attack" in game AND when CPU is ready to attack
 app.post("/battle", urlencodedParser, async (req, res) => {
     req = req.body
+    console.log("Request Body: ", req);
 
     var battleId = req.battleId;
     var avatarAttack = req.avatarAttack;

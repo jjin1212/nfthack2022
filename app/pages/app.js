@@ -9,11 +9,11 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+const battleId = randomIntFromInterval(1, 100);
 const App = () => {
   const { currentAddress } = useWalletContext();
 
   const [state, setState] = React.useState("idle");
-  const battleId = randomIntFromInterval(1, 100);
 
   const videoRef = React.useRef(null);
 
