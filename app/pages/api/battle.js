@@ -36,7 +36,7 @@ export default async function handler(req, res) {
 
   const result = await fetch("http://localhost:80/battle", {
     method: "POST",
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       "battleId": reqbody.battleId,
       "avatarAttack": attack,
