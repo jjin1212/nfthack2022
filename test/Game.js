@@ -18,10 +18,8 @@ describe("Game contract", function () {
         const equipmentFactory = await ethers.getContractFactory("EquipmentContract")
         const avatarFactory = await ethers.getContractFactory("AvatarOwnership")
         const randGeneratorFactory = await ethers.getContractFactory("RandomNumberConsumer")
-        attackBoosts = [2, 6, 10];
-        hpBoosts = [20, 30, 40];
         token = await tokenFactory.deploy();
-        equipment = await equipmentFactory.deploy(attackBoosts, hpBoosts);
+        equipment = await equipmentFactory.deploy();
         avatar = await avatarFactory.deploy(1000);
         randGenerator = await randGeneratorFactory.deploy();
         game = await gameFactory.deploy(
