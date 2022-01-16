@@ -27,7 +27,7 @@ export const MintAndStakeToken = () => {
         setStakedBalance(_b);
       }
     });
-  }, [currentAddress, token.contract, token.transaction]);
+  }, [currentAddress, token.contract, token.transaction, game.contract, game.transaction]);
 
 
   return (
@@ -65,6 +65,15 @@ export const MintAndStakeToken = () => {
         <Center mt={3}>
           <Text>You have {stakedBalance} staked token</Text>
         </Center>
+        {game.error && (
+          <Text color="red" fontSize="xs" mt="4">{game.error}</Text>
+        )}
+        {game.transaction && (
+          <Alert status='success' variant='subtle'>
+            <AlertIcon />
+            Successfully staked!
+          </Alert>
+        )}
       </Box>
     </Flex>
   );
