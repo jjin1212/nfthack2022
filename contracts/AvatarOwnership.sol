@@ -18,7 +18,7 @@ contract AvatarOwnership is ERC721Enumerable, AvatarModification {
     constructor(uint256 _maxSupply) ERC721("avatarNFT", "AVATAR") {
         maxSupply = _maxSupply;
         for (uint256 i = 0; i < maxSupply; i++) {
-            avatars.push(Avatar(0,10,100,0));
+            avatars.push(Avatar(0, 10, 100, 0));
         }
     }
 
